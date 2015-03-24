@@ -71,10 +71,6 @@ get :: [Int] -> Int -> Int
 get (a:as) 0 = a
 get (a:as) n = get as (n-1)
 
-size :: [Int] -> Int
-size [] = 0
-size (a:as) = 1 + size as
-
 firstElements :: [Int] -> Int -> [Int]
 firstElements list 0 = []
 firstElements (a:as) n = [a] ++ firstElements as (n-1)
@@ -82,7 +78,6 @@ firstElements (a:as) n = [a] ++ firstElements as (n-1)
 lastElements :: [Int] -> Int -> [Int]
 lastElements list 0 = list
 lastElements (a:as) n = lastElements as (n-1)
-
 
 
 
@@ -117,4 +112,23 @@ justEven (a:as)
 
 evenFib:: Int -> [Int]
 evenFib n = justEven (quicksort (fib n))
+
+menorMaior :: Int -> Int -> Int -> (Int,Int)
+menorMaior a b c
+	|a <= b && a <= c && b <= c = (a,c)
+	|a <= b && a <= c && b >= c = (a,b)
+	|b <= a && b <= c && a <= c = (b,c)
+	|b <= a && b <= c && a >= c = (b,a)
+	|c <= a && c <= b && a <= b = (c,b)
+	|otherwise = (c,a)
+
+
+ordenaTripla :: (Int,Int,Int) -> (Int,Int,Int)
+ordenaTripla (a,b,c)
+	|a <= b && a <= c && b <= c = (a,b,c)
+	|a <= b && a <= c && b >= c = (a,c,b)
+	|b <= a && b <= c && a <= c = (b,a,c)
+	|b <= a && b <= c && a >= c = (b,c,a)
+	|c <= a && c <= b && a <= b = (c,a,b)
+	|otherwise = (c,b,a)
 
