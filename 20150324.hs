@@ -132,3 +132,23 @@ ordenaTripla (a,b,c)
 	|c <= a && c <= b && a <= b = (c,a,b)
 	|otherwise = (c,b,a)
 
+type Ponto = (Float, Float)
+type Reta = (Ponto, Ponto)
+
+firstCoor :: Ponto -> Float
+firstCoor (a,b) = a
+
+secondCoor :: Ponto -> Float
+secondCoor (a,b) = b
+
+isVertical :: Reta -> Bool
+isVertical (pont1,pont2)
+	| firstCoor pont1 == firstCoor pont2 = True
+	| otherwise = False
+
+pontoY :: Float -> Reta -> Float
+pontoY x ((x1,y1), (x2,y2)) = ((y2-y1/x2-x1)*(x-x1))+y1
+
+
+
+
