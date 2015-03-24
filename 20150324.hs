@@ -1,3 +1,5 @@
+--Trabalho do dia
+
 --mergesort / heapsort
 
 --mergesort
@@ -80,4 +82,39 @@ firstElements (a:as) n = [a] ++ firstElements as (n-1)
 lastElements :: [Int] -> Int -> [Int]
 lastElements list 0 = list
 lastElements (a:as) n = lastElements as (n-1)
+
+
+
+
+--Exercício da aula
+
+bigger:: [Int] -> Int -> [Int]
+bigger [] p = []
+bigger (a:as) p
+	| a >=  p = (a: bigger as p)
+	|otherwise = bigger as p
+
+smaller:: [Int] -> Int -> [Int]
+smaller [] p = []
+smaller (a:as) p
+	| a <  p = (a: smaller as p)
+	|otherwise = smaller as p
+
+quicksort:: [Int] -> [Int]
+quicksort [] = []
+quicksort (pivot:list) = (quicksort (smaller list pivot))++[pivot]++ (quicksort (bigger list pivot))
+
+fib::Int->[Int]
+fib 1 = [1]
+fib 2 = [1, 1]
+fib n = (head (fib (n-1)) + head (fib (n-2))) : fib (n-1)
+
+justEven:: [Int] -> [Int]
+justEven [] = []
+justEven (a:as)
+	| a `mod` 2 == 0 = (a:justEven as)
+	| otherwise = justEven as
+
+evenFib:: Int -> [Int]
+evenFib n = justEven (quicksort (fib n))
 
