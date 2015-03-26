@@ -3,45 +3,57 @@
 --tabela hash
 type Chave = Int
 type Codigo = Int
-type Tupa = (Chave,Codigo)
+--type Tupla = (Chave,Codigo)
 type HashTable = [Int]
 
-search :: HashTable -> Int -> Int -> Int
+search :: HashTable -> Chave -> Int -> Int
 search l key n
 	| n == (key `mod` (length l)) = (-1)
 	| n == (length l) = search l key 0
 	| l !! n == key = n
 	| otherwise = search l key (n+1)
 
---freeSpace :: [Int] -> Int -> Int -> Int
+freeSpace :: HashTable -> Chave-> Int -> Int
+freeSpace l key n
+	| n == (key `mod` (length l)) = (-1)
+	| n == (length l) = freeSpace l key 0
+	| l !! n == (-1) = n
+	| otherwise = freeSpace l key (n+1)
 
 removeElement :: [Int] -> Int -> [Int]
+removeElement l (-1) = l
 removeElement [] n = []
 removeElement (a:as) n
 	|n == 0 = ((-1):(removeElement as (n-1)))
-	|otherwise = (a:(removeElement as (n-1))) 
+	|otherwise = (a:(removeElement as (n-1)))
 
-get :: HashTable -> Int -> Int
+setElement :: [Int] -> Int -> Chave -> [Int]
+setElement l (-1) key = l
+setElement [] n key = []
+setElement (a:as) n key
+	|n == 0 = (key:(setElement as (n-1) key))
+	|otherwise = (a:(setElement as (n-1) key))
+
+get :: HashTable -> Chave -> Int
 get [] key = (-1)
 get hash key
-	|hasKey hash key  == False = (-1)
 	|hash !! (key `mod` (length hash)) == key = (key `mod` (length hash))
 	|otherwise = search hash key ((key `mod` (length hash))+1)
 
---put :: [Int] -> Int -> [Int]
+put :: HashTable -> Chave -> HashTable
+put [] key = []
+put hash key
+	|hash !! (key `mod` (length hash)) == (-1) = setElement hash (key `mod` (length hash)) key
+	|otherwise = setElement hash (freeSpace hash key ((key `mod` (length hash))+1)) key
 
-remove :: HashTable -> Int -> HashTable
+remove :: HashTable -> Chave -> HashTable
 remove [] key = []
-remove hash key
-	|hasKey hash key  == False = hash
-	|hash !! (key `mod` (length hash)) == key = removeElement hash (key `mod` (length hash))
-	|otherwise = removeElement hash (search hash key ((key `mod` (length hash))+1))
+remove hash key = removeElement hash (get hash key)
 
-hasKey :: HashTable -> Int -> Bool
+hasKey :: HashTable -> Chave -> Bool
 hasKey [] key = False
-hasKey hash key 
-	|hash !! (key `mod` (length hash)) == key = True
-	|search hash key ((key `mod` (length hash))+1) == (-1) = False
+hasKey hash key
+	|get hash key == (-1) = False
 	|otherwise = True
 
 --comparando conjunto
@@ -91,8 +103,8 @@ intercesiona (a:as) (b:bs)
 	
 comparaConjuntos :: (Ord t) => [t] -> [t] -> String
 comparaConjuntos a b
-	|contem (elimRep (quicksort a)) (elimRep (quicksort b)) == True = "A contem B"
-	|contem (elimRep (quicksort b)) (elimRep (quicksort a)) == True = "B contem A"
+	|contem (elimRep (quicksort a)) (elimRep (quicksort b)) == True = "B contem A"
+	|contem (elimRep (quicksort b)) (elimRep (quicksort a)) == True = "A contem B"
 	|igual (elimRep (quicksort a)) (elimRep (quicksort b)) == True = "A igual B"
 	|intercesiona (elimRep (quicksort a)) (elimRep (quicksort b)) == True = "A intercesiona B"
 	|otherwise = "Conjuntos disjuntos" 
