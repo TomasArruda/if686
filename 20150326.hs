@@ -138,6 +138,31 @@ qtdEmprestimos ((p,l):ls) pp
 	| p == pp = 1 + qtdEmprestimos ls pp
 	| otherwise = 0 + qtdEmprestimos ls pp
 
+pegar :: [t] -> Int -> [t]
+pegar [] _ = [] 
+pegar _ 0 = []
+pegar (a:as) n = (a:pegar as (n-1))
+
+cair :: [t] -> Int -> [t]
+cair [] _ = []
+cair as 0 = as
+cair (a:as) n = cair as (n-1)
+
+takeWhile :: (a -> Bool) -> [a] ->  [a]
+takeWhile func [] = []
+takeWhile (a:as) func
+	|func a == False = []
+	|otherwise = (a:takeWhile func as) 
+
+dropWhile :: (a -> Bool) -> [a] ->  [a]
+dropWhile func [] = []
+dropWhile (a:as) func
+	|func a == False = as
+	|otherwise = takeWhile func as
+	
+--quicksort :: (0rd t) => [t] -> [t]
+--quicksort [] = []
+--quicksort (p,as) = quicksort([x|x<-l,x<p])++[p]++quicksort([y|y<-l,y>=p])
 
 
 
