@@ -148,17 +148,17 @@ cair [] _ = []
 cair as 0 = as
 cair (a:as) n = cair as (n-1)
 
-takeWhile :: (a -> Bool) -> [a] ->  [a]
-takeWhile func [] = []
-takeWhile (a:as) func
+pegarWhile :: (a -> Bool) -> [a] ->  [a]
+pegarWhile func [] = []
+pegarWhile (a:as) func
 	|func a == False = []
-	|otherwise = (a:takeWhile func as) 
+	|otherwise = (a:pegarWhile func as) 
 
-dropWhile :: (a -> Bool) -> [a] ->  [a]
-dropWhile func [] = []
-dropWhile (a:as) func
+cairWhile :: (a -> Bool) -> [a] ->  [a]
+cairWhile func [] = []
+cairWhile (a:as) func
 	|func a == False = as
-	|otherwise = takeWhile func as
+	|otherwise = cairWhile func as
 	
 --quicksort :: (0rd t) => [t] -> [t]
 --quicksort [] = []
