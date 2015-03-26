@@ -3,48 +3,48 @@
 --tabela hash
 type Chave = Int
 type Codigo = Int
---type Tupla = (Chave,Codigo)
-type HashTable = [Int]
+type Tupla = (Chave,Codigo)
+type HashTable = [Tupla]
 
 search :: HashTable -> Chave -> Int -> Int
 search l key n
 	| n == (key `mod` (length l)) = (-1)
 	| n == (length l) = search l key 0
-	| l !! n == key = n
+	| fst (l !! n) == key = n
 	| otherwise = search l key (n+1)
 
 freeSpace :: HashTable -> Chave-> Int -> Int
 freeSpace l key n
 	| n == (key `mod` (length l)) = (-1)
 	| n == (length l) = freeSpace l key 0
-	| l !! n == (-1) = n
+	| fst (l !! n) == (-1) = n
 	| otherwise = freeSpace l key (n+1)
 
-removeElement :: [Int] -> Int -> [Int]
+removeElement :: HashTable -> Int -> HashTable
 removeElement l (-1) = l
 removeElement [] n = []
 removeElement (a:as) n
-	|n == 0 = ((-1):(removeElement as (n-1)))
+	|n == 0 = (((-1),(-1)):(removeElement as (n-1)))
 	|otherwise = (a:(removeElement as (n-1)))
 
-setElement :: [Int] -> Int -> Chave -> [Int]
-setElement l (-1) key = l
-setElement [] n key = []
-setElement (a:as) n key
-	|n == 0 = (key:(setElement as (n-1) key))
-	|otherwise = (a:(setElement as (n-1) key))
+setElement :: HashTable -> Int -> Chave -> Codigo -> HashTable
+setElement l (-1) key codigo = l
+setElement [] n key codigo = []
+setElement (a:as) n key codigo
+	|n == 0 = ((key,codigo):(setElement as (n-1) key codigo))
+	|otherwise = (a:(setElement as (n-1) key codigo))
 
 get :: HashTable -> Chave -> Int
 get [] key = (-1)
 get hash key
-	|hash !! (key `mod` (length hash)) == key = (key `mod` (length hash))
+	|fst (hash !! (key `mod` (length hash))) == key = (key `mod` (length hash))
 	|otherwise = search hash key ((key `mod` (length hash))+1)
 
-put :: HashTable -> Chave -> HashTable
-put [] key = []
-put hash key
-	|hash !! (key `mod` (length hash)) == (-1) = setElement hash (key `mod` (length hash)) key
-	|otherwise = setElement hash (freeSpace hash key ((key `mod` (length hash))+1)) key
+put :: HashTable -> Chave -> Codigo -> HashTable
+put [] key codigo = []
+put hash key codigo
+	|fst (hash !! (key `mod` (length hash))) == (-1) = setElement hash (key `mod` (length hash)) key codigo
+	|otherwise = setElement hash (freeSpace hash key ((key `mod` (length hash))+1)) key codigo
 
 remove :: HashTable -> Chave -> HashTable
 remove [] key = []
