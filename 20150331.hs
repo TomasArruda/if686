@@ -9,56 +9,49 @@
 --a sobrecarga de classes em haskell resolve isso.
 
 --Questão 2
+lookAndSay ::  Int -> String
+lookAndSay n
+	|n == 1 = "1"
+	|otherwise = juntar (lookAndSay (n-1))
 
---lookAndSay :: (Num t) => t -> Int
---lookAndSay 1 = 1
+repete :: String -> Int
+repete [] = 0
+repete (a:[]) = 1
+repete (a:b:as)
+	|a==b = 1+repete(b:as)
+	|otherwise = 1
 
+concatena :: String -> (Int, Char, String)
+concatena s = (repete s, fst temp, snd temp )
+	where temp = resto s
+
+resto :: String -> (Char,String)
+resto  [] = ('0', [])
+resto (a:[]) = (a, [])
+resto (a:b:as)
+	|a == b = resto (b:as)
+	|otherwise = (a,(b:as))
+
+
+juntar :: String -> String
+juntar [] = []
+juntar s = (show x)++[y]++(juntar z)
+	where (x,y,z) = concatena s
 
 --Questão 3
 
-data Graph a = Graph [a] [(a, a)] deriving (Show, Eq)
-
-contens::(Eq a) => [a] -> a -> True
-contens [] a = False
-contens (l:ls) a
-	| l == a = True
-	| otherwise = contens ls a
-
-getAdjacent :: (Eq a) => [(a,a)] -> a -> [a]
-getAdjacent [] a = []
-getAdjacent ((x,y):ls) a
-	|x == a = (y:getAdjacent ls a)
-	|y == a = (x:getAdjacent ls a)
-	|otherwise =  getAdjacent ls a
-
-excludePassBy :: (Eq a) => [a] -> a -> [a]
-excludePassBy [] a = []
-excludePassBy (a:as) b
-	| a == b = excludePassBy as b
-	|otherwise = (a:excludePassBy as b)
-
-findBool :: (Eq a) => Graph a -> [a] -> a -> Bool
-findBool (Graph [] _) _ _ = False
-findBool _ [] _ = False
-findBool (Graph l ls )  (x:xs) a 
-	| getAdjacent ls x == [] = findBool (Graph l ls ) xs a
-	| contens (getAdjacent ls x) a == True
-	| otherwise = findBool (Graph (excludePassBy x) ls) (getAdjacent x) a 
-
-find :: (Eq a) => Graph a -> [a] -> a -> [a]
-find (Graph [] _) _ _ = []
-find _ [] _ = []
-find (Graph l ls )  (x:xs) a 
-	| getAdjacent ls x == [] = find (Graph l ls ) xs a
-	| contens (getAdjacent ls x) a == True = [(x,a)] 
-
-
-search :: (Eq a) => Graph a -> a -> a -> [(a,a)]
-search (Graph [] _) a b = []
-search (Graph l ls)) a b = find (Graph (excludePassBy l) ls) (getAdjacent a) b
+data Graph a = Graph  [(a, [a])] deriving (Show, Eq)
 
 
 
+
+
+
+--Questão 4
+
+--mediana :: [Int] -> Int
+--media ls
+--	|length 
 
 
 
