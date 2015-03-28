@@ -9,10 +9,11 @@
 --a sobrecarga de classes em haskell resolve isso.
 
 --Questão 2
-lookAndSay ::  Int -> String
-lookAndSay n
-	|n == 1 = "1"
-	|otherwise = juntar (lookAndSay (n-1))
+lookAndSay ::(Show t) => Int -> t -> String
+lookAndSay n c
+	|n == 1 && (length (show c)) > 1 = [(show c) !! 1]
+	|n == 1 = show c
+	|otherwise = juntar (lookAndSay (n-1) c)
 
 repete :: String -> Int
 repete [] = 0
