@@ -138,6 +138,18 @@ qtdEmprestimos ((p,l):ls) pp
 	| p == pp = 1 + qtdEmprestimos ls pp
 	| otherwise = 0 + qtdEmprestimos ls pp
 
+emprestar :: BancoDados -> Pessoa -> Livro -> BancoDados
+emprestar bd [] _ = bd
+emprestar bd _ [] = bd
+emprestar bd p l = ((p,l):bd) 
+
+devolver :: BancoDados -> Pessoa -> Livro -> BancoDados
+devolver bd [] _ = bd
+devolver bd _ [] = bd
+devolver ((p,l):as) pp ll
+	| p == pp && l == ll = as
+	|otherwise = ((p,l):devolver as)
+	
 pegar :: [t] -> Int -> [t]
 pegar [] _ = [] 
 pegar _ 0 = []
