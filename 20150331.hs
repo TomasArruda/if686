@@ -40,11 +40,57 @@ juntar s = (show x)++[y]++(juntar z)
 	where (x,y,z) = concatena s
 
 --Questão 3
+type Arestas = [Int]
+type No = (Int,Arestas)
+type Grafo = [No]
+type Stack = [No]
 
-data Graph a = Graph  [(a, [a])] deriving (Show, Eq)
+meuGrafo :: Grafo
 
+meuGrafo = [(1,[2,5]),(2,[1,3,5]),(3,[2,4]),(4,[3,5,6]),(5,[1,2,4]),(6,[4])]
 
+pilha :: Stack
+pilha = []
 
+search :: Grafo -> Int -> Int -> [Int]
+search grf a b
+ | a == b = [b]
+ | verificaAdjacencia (getAdj grf a) b == True = a : [b]
+ | otherwise = [0]
+
+getAdj :: Grafo -> Int -> [Int]
+getAdj (a:as) b
+ | (a:as) == [] = []
+ | b == fst a = snd a
+ | otherwise = getAdj as b
+
+naoMarcado :: [Int] -> [Int] -> Int
+naoMarcado [] (a:as) = a
+naoMarcado marcado [] = 0
+naoMarcado marcado (a:as)
+ | elem a marcado = naoMarcado marcado as
+ | otherwise = a
+
+verificaAdjacencia :: Arestas -> Int -> Bool
+verificaAdjacencia [] b = False
+verificaAdjacencia (a:as) b
+ | (a:as) == [] = False
+ | b == a = True
+ | b /= a = verificaAdjacencia as b
+ | otherwise = False
+
+dfs :: Grafo -> [Int] -> [Int] -> [Int]
+dfs grafo marcado [] = reverse marcado
+dfs grafo marcado (a:as) 
+ | elem a marcado = dfs grafo marcado as --pega o proximo da lista de adj nao marcado
+ | otherwise = dfs grafo (a:marcado) (getAdj grafo a) --marca o cara e chama a funcao passando os filhos dele
+
+dfs2 :: Grafo -> [Int] -> Int -> [Int] -> [Int]
+dfs2 grafo1 marcado1 no [] = reverse marcado1
+dfs2 grafo1 marcado1 no (a:as) 
+ | no == 0 = dfs2 grafo1 marcado1 (naoMarcado marcado1 (getAdj grafo1 (head as))) as -- se chegou numa folha ou num cara q ja tem todos os vizinhos marcados, da um pop na pilha e chama novamente a funcao
+ | no /= 0 = dfs2 grafo1 (no:marcado1) (naoMarcado marcado1 (getAdj grafo1 no)) (no:marcado1)  -- marca o cara, coloca ele na pilha e chama a funcao com os adjacentes a ele
+ | otherwise = []
 
 
 
@@ -138,5 +184,81 @@ medianaCalc [] = 0
 medianaCalc ls
 	|odd (length ls) == True = ls !! (((length ls)`div`2))
 	|otherwise = ((ls !! ((length ls)`div`2))+(ls !! (((length ls)`div`2)-1)))`div`2
+	
+	
+
+
+	
+--Exercícios de sala
+
+getNext :: [(Int,Int,String)] -> Int -> Char -> String
+getNext [] _ _ = []
+getNext ((v1,v2,res):as) estado c
+	|v1 ==  estado && (res !! 0) == c = show v2
+	|otherwise = getNext as estado c
+	
+contem :: [Int] -> Int -> Bool
+contem [] _ = False
+contem (a:as) x 
+	|a == x = True
+	|otherwise = contem as x
+
+afd :: String -> [Int] -> [(Int,Int,String)] -> Int -> [Int] -> Bool
+afd [] _ _ inicial aceitacao  = contem aceitacao inicial
+afd (a:entradas) estados regras inicial aceitacao = afd entradas estados regras (read (getNext regras inicial a)) aceitacao
+
+hexChar :: Char -> Int
+hexChar c
+    | c == '0' = 0
+    | c == '1' = 1
+    | c == '2' = 2
+    | c == '3' = 3
+    | c == '4' = 4
+    | c == '5' = 5
+    | c == '6' = 6
+    | c == '7' = 7
+    | c == '8' = 8
+    | c == '9' = 9
+    | c == 'A' = 10
+    | c == 'B' = 11
+    | c == 'C' = 12
+    | c == 'D' = 13
+    | c == 'E' = 14
+    | c == 'F' = 15
+    | otherwise = 0
+toDecimal :: String -> Int
+toDecimal x 
+    | length x /= 0 = (hexChar(last(x)))+(16*toDecimal(init(x)))
+    | otherwise = 0 
+
+toHexadecimal :: Int -> String
+toHexadecimal 0 = "0"
+toHexadecimal n
+	| n `mod` 16 == 0 = toHexadecimal (n `div` 16) ++ "0"
+	| n `mod` 16 == 1 = toHexadecimal (n `div` 16) ++ "1"
+	| n `mod` 16 == 2 = toHexadecimal (n `div` 16) ++ "2"
+	| n `mod` 16 == 3 = toHexadecimal (n `div` 16) ++ "3"
+	| n `mod` 16 == 4 = toHexadecimal (n `div` 16) ++ "4"
+	| n `mod` 16 == 5 = toHexadecimal (n `div` 16) ++ "5"
+	| n `mod` 16 == 6 = toHexadecimal (n `div` 16) ++ "6"
+	| n `mod` 16 == 7 = toHexadecimal (n `div` 16) ++ "7"
+	| n `mod` 16 == 8 = toHexadecimal (n `div` 16) ++ "8"
+	| n `mod` 16 == 9 = toHexadecimal (n `div` 16) ++ "9"
+	| n `mod` 16 == 10 = toHexadecimal (n `div` 16) ++ "A"
+	| n `mod` 16 == 11 = toHexadecimal (n `div` 16) ++ "B"
+	| n `mod` 16 == 12 = toHexadecimal (n `div` 16) ++ "C"
+	| n `mod` 16 == 13 = toHexadecimal (n `div` 16) ++ "D"
+	| n `mod` 16 == 14 = toHexadecimal (n `div` 16) ++ "E"
+	| n `mod` 16 == 15 = toHexadecimal (n `div` 16) ++ "F"
+
+
+somaHexadecimal :: String -> String -> String
+somaHexadecimal a b = toHexadecimal ((toDecimal a)+(toDecimal b))
+
+somatorioHexadecimal :: [String] -> String
+somatorioHexadecimal [] = "0"
+somatorioHexadecimal (a:as) = somaHexadecimal a (somatorioHexadecimal as)
+
+
 
 
