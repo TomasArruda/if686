@@ -132,11 +132,22 @@ emprestado ((p,l):ls) ll
 	| l == ll = True
 	|otherwise = emprestado ls ll
 
+--emprestado :: BancoDados -> Livro -> Bool
+--emprestado ls ll = emprestadoAux [p|(p,l)<-ls, l == ll]
+
+--emprestadoAux :: [Pessoa] -> Bool
+--emprestadoAux [] = False
+--emprestadoAux _ = True
+
+
 qtdEmprestimos :: BancoDados -> Pessoa -> Int
 qtdEmprestimos [] pp = 0
 qtdEmprestimos ((p,l):ls) pp
 	| p == pp = 1 + qtdEmprestimos ls pp
 	| otherwise = 0 + qtdEmprestimos ls pp
+
+--qtdEmprestimos :: BancoDados -> Pessoa -> Int
+--qtdEmprestimos ls pp = length [p|(p,l)<-ls, p==pp]
 
 emprestar :: BancoDados -> Pessoa -> Livro -> BancoDados
 emprestar bd [] _ = bd
@@ -148,7 +159,10 @@ devolver bd [] _ = bd
 devolver bd _ [] = bd
 devolver ((p,l):as) pp ll
 	| p == pp && l == ll = as
-	|otherwise = ((p,l):devolver as)
+	|otherwise = ((p,l):(devolver as pp ll))
+
+--devolver :: BancoDados -> Pessoa -> Livro -> BancoDados
+--devolver bd pp ll = [(pp,ll)]++[t|t<-bd]
 	
 pegar :: [t] -> Int -> [t]
 pegar [] _ = [] 
@@ -162,13 +176,13 @@ cair (a:as) n = cair as (n-1)
 
 pegarWhile :: (a -> Bool) -> [a] ->  [a]
 pegarWhile func [] = []
-pegarWhile (a:as) func
+pegarWhile func (a:as) 
 	|func a == False = []
 	|otherwise = (a:pegarWhile func as) 
 
 cairWhile :: (a -> Bool) -> [a] ->  [a]
 cairWhile func [] = []
-cairWhile (a:as) func
+cairWhile func (a:as) 
 	|func a == False = as
 	|otherwise = cairWhile func as
 	
