@@ -232,7 +232,7 @@ toDecimal x
     | otherwise = 0 
 
 toHexadecimal :: Int -> String
-toHexadecimal 0 = "0"
+toHexadecimal 0 = []
 toHexadecimal n
 	| n `mod` 16 == 0 = toHexadecimal (n `div` 16) ++ "0"
 	| n `mod` 16 == 1 = toHexadecimal (n `div` 16) ++ "1"
