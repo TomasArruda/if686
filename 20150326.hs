@@ -190,6 +190,43 @@ cairWhile func (a:as)
 --quicksort [] = []
 --quicksort (p,as) = quicksort([x|x<-l,x<p])++[p]++quicksort([y|y<-l,y>=p])
 
+getWord :: String -> String
+getWord []  = []
+getWord (a:as)
+	|a == ' ' = []
+	|otherwise = (a: getWord as)
+	
+dropWord :: String -> String
+dropWord [] = []
+dropWord (a:as)
+	| a == ' ' = (a:as)
+	|otherwise = dropWord as
+
+dropSpace :: String -> String
+dropSpace [] = []
+dropSpace (a:as)
+	|a == ' ' = dropSpace as
+	|otherwise = (a:as)
+
+type Word = String
+splitWords :: String->[Word]
+splitWords [] = []
+splitWords string = (getWord string:(splitWords (dropSpace (dropWord string))))
+
+type line = [Word]
+getLine :: Int -> [Word] -> Line
+getLine 0 _ = []
+getLine _ [] = []
+
+--dropLine :: Int -> [Word] -> [Word]
+
+--splitLines :: [Word] -> [Word]
+
+--fill :: String -> [Line]
+--fill st = splitLines (splitWords st)
+
+--joinLines :: [Line] -> String
+
 
 
 
