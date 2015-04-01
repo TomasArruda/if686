@@ -227,6 +227,9 @@ getLine _ [] = []
 
 --joinLines :: [Line] -> String
 
+agrupar :: (Eq t) => [[t]] -> [(t,Int)]
+agrupar [] = []
+
 
 
 
