@@ -213,7 +213,7 @@ splitWords :: String->[Word]
 splitWords [] = []
 splitWords string = (getWord string:(splitWords (dropSpace (dropWord string))))
 
-type line = [Word]
+type Line = [Word]
 getLine :: Int -> [Word] -> Line
 getLine 0 _ = []
 getLine _ [] = []
@@ -227,8 +227,24 @@ getLine _ [] = []
 
 --joinLines :: [Line] -> String
 
+add :: (Eq t) => t -> [(t,Int)] -> [(t,Int)]
+add v [] = ((v,1):[])
+add v ((a,n):as) 
+	| a == v = ((a,(n+1)):as)
+	|otherwise = ((a,n):add v as)
+
+byWord :: (Eq t) => [t] -> [(t,Int)]
+byWord [] = []
+byWord (a:as) = add a (byWord as)
+
+
+joinT :: (Eq t) => [[t]] -> [t]
+joinT [] = []
+joinT (a:as) = a++(joinT as)
+
 agrupar :: (Eq t) => [[t]] -> [(t,Int)]
 agrupar [] = []
+agrupar l = reverse (byWord (joinT l))
 
 
 
