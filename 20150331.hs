@@ -259,6 +259,37 @@ somatorioHexadecimal :: [String] -> String
 somatorioHexadecimal [] = "0"
 somatorioHexadecimal (a:as) = somaHexadecimal a (somatorioHexadecimal as)
 
+inverter :: String -> String
+inverter [] = []
+inverter (a:as) = (inverter as)++[a]
+
+stringIgual :: String -> String -> Bool
+stringIgual [] (a:[]) = False
+stringIgual (a:[]) [] = False
+stringIgual [] [] = True
+stringIgual (a:as) (b:bs)
+	| a == b = stringIgual as bs
+	|otherwise = False
+
+palindromoCheck :: String -> Bool
+palindromoCheck [] = False
+palindromoCheck s = stringIgual a (inverter b)
+	where 
+		a = take ((length s) `div` 2) s
+		b = drop ((length s) `div` 2) s
+
+palindromo :: String -> String
+palindromo [] = []
+palindromo s 
+	|palindromoCheck h == False = h++" - NAO-PALINDROMO"
+	|otherwise = h++" - PALINDROMO"
+	where h = show (toDecimal s)
+
+type Vector = [Double]
+type Matrix = [Vector]
+
+multiplicaMatrizes :: Matrix -> Matrix -> Matrix
+multiplicaMatrizes [] [] = []
 
 
 
