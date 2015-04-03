@@ -214,18 +214,39 @@ splitWords [] = []
 splitWords string = (getWord string:(splitWords (dropSpace (dropWord string))))
 
 type Line = [Word]
-getLine :: Int -> [Word] -> Line
-getLine 0 _ = []
-getLine _ [] = []
+getLineT :: Int -> Line -> Line
+getLineT _ [] = []
+getLineT n (a:as)
+	|n <= tam = [(pegar a n)]
+	|otherwise = (a:(getLineT (n-tam) as))
+	where
+		tam = (length a)
 
---dropLine :: Int -> [Word] -> [Word]
+dropLineT :: Int -> [Word] -> [Word]
+dropLineT _ [] = []
+dropLineT n (a:as)
+	|(n-tam) == 0 = as
+	|n <= tam = [cair a n]++as
+	|otherwise = (dropLineT (n-tam) as)
+	where
+		tam = (length a)
 
---splitLines :: [Word] -> [Word]
 
---fill :: String -> [Line]
+splitLines :: [Word] -> [Line]
+splitLines [] = []
+splitLines wrds = ((getLineT tam wrds):(splitLines (dropLineT tam wrds)))
+	where
+		tam = 5
+
+fill :: String -> [Line]
+fill [] = []
+fill strg = ([(getWord strg)]:(fill (dropSpace (dropWord strg))))
+
 --fill st = splitLines (splitWords st)
 
---joinLines :: [Line] -> String
+joinLines :: [Line] -> String
+joinLines (a:[]) = (a!!0)
+joinLines (a:as) = (a!!0)++" "++(joinLines as)
 
 add :: (Eq t) => t -> [(t,Int)] -> [(t,Int)]
 add v [] = ((v,1):[])
