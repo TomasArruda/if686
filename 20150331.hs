@@ -291,5 +291,24 @@ type Matrix = [Vector]
 multiplicaMatrizes :: Matrix -> Matrix -> Matrix
 multiplicaMatrizes [] [] = []
 
+multiplicaMatrizesAux :: Matrix -> Matrix -> Matrix
+multiplicaMatrizesAux [] _ = []
+multiplicaMatrizesAux (m:ms) m2 = ((linha m m2 0):(multiplicaMatrizesAux ms m2))
+
+linha :: Vector -> Matrix -> Int -> Vector
+linha l m n 
+	|n == (length l) = []
+	|otherwise = ((multiplicar l (pegarLinha m n)):(linha l m (n+1)))
+
+pegarLinha :: Matrix -> Int -> Vector
+pegarLinha (a:[]) n = [(a!!n)]
+pegarLinha (a:as) n = ((a!!n):(pegarLinha as n))
+
+multiplicar :: Vector -> Vector -> Double
+multiplicar [] _ = 0
+multiplicar _ [] = 0
+multiplicar (a:as) (b:bs) = (a * b) + (multiplicar as bs)
+
+
 
 
