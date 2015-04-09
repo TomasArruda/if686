@@ -1,3 +1,5 @@
+import Data.Char (ord)
+
 --Trabalho
 --Questão 1
 data Graph a = Graph [a] [(a, a, Int)] deriving (Show, Eq, Ord)
@@ -70,3 +72,42 @@ find :: (Eq a) => Graph a -> a -> a -> Bool
 find (Graph l ls ) ini cheg = orList (findBool (Graph l ls) [ini] l cheg)
 
 --Exercícios
+
+
+
+raiz a = sqrt a
+
+--todosRaiz :: [t] -> [t]
+todosRaiz [a] = map raiz [a]
+
+posicaoAlfabeto :: Char -> Int
+posicaoAlfabeto c = (ord c)-96
+
+todosPosicaoAlfabeto :: [Char] -> [Int]
+todosPosicaoAlfabeto c = map posicaoAlfabeto c 
+
+meuMap :: (t->u) -> [t] -> [u]
+meuMap func ls = [func l |l<-ls]
+
+member :: (Eq t) => t -> [t] -> Bool
+member a as = foldr (||) False (map ((==)a) as)
+
+juntar :: (Ord t) => [t] -> [t] -> [t]
+juntar [] l = l
+juntar l [] = l
+juntar (a:as) (b:bs)
+	|(member a (b:bs)) == True = (b:(juntar as bs))
+	|otherwise =(a:(juntar as (b:bs)))
+
+union :: (Ord t) => [t] -> [t] -> [t]
+union as bs = foldr (juntar) [] ([as]++[bss])
+
+somaCharStringAux :: String -> Int
+somaCharStringAux l = foldr (+) 0 (todosPosicaoAlfabeto l)
+
+somaCharString :: [String] -> [Int]
+somaCharString ls = (map somaCharStringAux ls)
+	
+
+
+
