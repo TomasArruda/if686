@@ -73,8 +73,6 @@ find (Graph l ls ) ini cheg = orList (findBool (Graph l ls) [ini] l cheg)
 
 --Exercícios
 
-
-
 raiz a = sqrt a
 
 --todosRaiz :: [t] -> [t]
@@ -100,14 +98,23 @@ juntar (a:as) (b:bs)
 	|otherwise =(a:(juntar as (b:bs)))
 
 union :: (Ord t) => [t] -> [t] -> [t]
-union as bs = foldr (juntar) [] ([as]++[bss])
+union as bs = foldr (juntar) [] ([as]++[bs])
 
 somaCharStringAux :: String -> Int
 somaCharStringAux l = foldr (+) 0 (todosPosicaoAlfabeto l)
 
 somaCharString :: [String] -> [Int]
 somaCharString ls = (map somaCharStringAux ls)
-	
+
+data Tree t = NilT | Node t (Tree t) (Tree t) deriving (Eq, Show)
+
+adcionaElemento :: Ord t => (Tree t) -> t -> (Tree t)
+adcionaElemento NilT val = (Node val NilT NilT)
+adcionaElemento (Node v n1 n2) val = (Node v (adcionaElemento n1 val) n2)
+
+criarArvore :: Ord t => [t]->(Tree t->t->Tree t)->Tree t
+criarArvore [] func = NilT
+--criarArvore (x:xs) func = foldr
 
 
 
