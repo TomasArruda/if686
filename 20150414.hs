@@ -44,3 +44,17 @@ filterTreeAux2 func (Node v n1 n2)
 	where 
 		(x,xs) = filterTreeAux2 func n1
 		(y,ys) = filterTreeAux2 func n2
+
+--exerciciosel
+
+--elimina :: Int -> [[Int]] -> [[Int]]
+--elimina valor ls  = [l|l<-ls, (foldr (+) 0 l)<valor]
+
+elimina :: Int -> [[Int]] -> [[Int]]
+elimina v ls  = filter (\x->(foldr (+) 0 x)>=v) ls
+
+inter ::(Eq t) => [t] -> [t] -> [t]
+inter l1 l2 = []
+
+diff ::(Eq t) => [t] -> [t] -> [t]
+inter l1 l2 = []
