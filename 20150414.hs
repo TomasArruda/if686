@@ -57,4 +57,9 @@ inter ::(Eq t) => [t] -> [t] -> [t]
 inter l1 l2 = []
 
 diff ::(Eq t) => [t] -> [t] -> [t]
-inter l1 l2 = []
+diff l1 l2 = []
+
+mapfilter :: (a -> Bool) -> [[a]] -> [[a]]
+mapfilter func l =  map (filter func) l
+
+
