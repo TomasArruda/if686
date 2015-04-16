@@ -1,0 +1,18 @@
+
+Exercícios
+
+• Implemente uma função mapfold que, sem usar map
+
+nem foldr, comporte-se como a função
+
+map.foldr
+
+Em seguida, implemente uma função que pega a lista l
+
+produzida como resultado de uma aplicação de 
+
+mapfold e, dada uma lista m de elementos de um tipo 
+
+tão genérico quando possível, aplica os elementos de l a 
+
+m.
