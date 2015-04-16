@@ -16,3 +16,23 @@ mapfold e, dada uma lista m de elementos de um tipo
 tão genérico quando possível, aplica os elementos de l a 
 
 m.
+
+
+
+Defina, usando aplicação parcial de funções, 
+
+funções para:
+
+• Dada uma lista de números, obter o maior da lista
+
+• Dada uma árvore binária, devolver uma função 
+
+que, dada uma árvore binária, verifica se as duas 
+
+árvores são isomórficas
+
+• Dada uma lista, devolve uma função que, dada uma 
+
+lista, devolve uma lista de pares onde cada par 
+
+contém um elemento de cada lista

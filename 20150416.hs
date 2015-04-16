@@ -55,3 +55,9 @@ contador (a:as) v
 	|otherwise = 0+(contador as v) 
 
 
+--funções parciais
+somar :: Int -> [Int] -> [Int]
+somar x = map (+x)
+
+
+
