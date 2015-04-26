@@ -108,4 +108,3 @@ geraFuncoMenorCaminho graph = \x y ->shortest (distances graph (allPaths (adjace
 
 
 
-
