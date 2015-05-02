@@ -1,7 +1,83 @@
 import Data.Char (ord)
 import Data.Char (toUpper)
 
---qQuestão 1
+--Questão 1
+--tabela hash
+type Chave = Int
+type Codigo = Int
+type Tupla = (Chave,Codigo)
+type HashTable = [Tupla]
+
+search :: HashTable -> Chave -> Int -> Maybe Int
+search l key n
+	| n == (key `mod` (length l)) = Nothing
+	| n == (length l) = (search l key 0)
+	| fst (l !! n) == key = Just n
+	| otherwise = (search l key (n+1))
+
+freeSpace :: HashTable -> Chave-> Int -> Int
+freeSpace l key n
+	| n == (key `mod` (length l)) = (-1)
+	| n == (length l) = freeSpace l key 0
+	| fst (l !! n) == (-1) = n
+	| otherwise = freeSpace l key (n+1)
+
+removeElement :: HashTable -> Maybe Int -> Maybe HashTable
+removeElement l Nothing = Nothing
+removeElement [] (Just n) = Just []
+removeElement (a:as) (Just n)
+	|n == 0 = Just (((-1),(-1)):x)
+	|otherwise = Just (a:x)
+	where Just x = (removeElement as (Just (n-1)))
+
+setElement :: HashTable -> Int -> Chave -> Codigo -> HashTable
+setElement l (-1) key codigo = l
+setElement [] n key codigo = []
+setElement (a:as) n key codigo
+	|n == 0 = ((key,codigo):(setElement as (n-1) key codigo))
+	|otherwise = (a:(setElement as (n-1) key codigo))
+
+get :: HashTable -> Chave -> Maybe Int
+get [] key = Nothing
+get hash key
+	|fst (hash !! (key `mod` (length hash))) == key = Just (key `mod` (length hash))
+	|otherwise = search hash key ((key `mod` (length hash))+1)
+
+put :: HashTable -> Chave -> Codigo -> Maybe HashTable
+put [] key codigo = Nothing
+put hash key codigo
+	|fst (hash !! (key `mod` (length hash))) == (-1) = Just (setElement hash (key `mod` (length hash)) key codigo)
+	|otherwise = Just (setElement hash (freeSpace hash key ((key `mod` (length hash))+1)) key codigo)
+
+remove :: HashTable -> Chave -> Maybe HashTable
+remove [] key = Nothing
+remove hash key = (removeElement hash (get hash key))
+
+hasKey :: HashTable -> Chave -> Bool
+hasKey [] key = False
+hasKey hash key
+	|c == (-1) = False
+	|otherwise = True
+	where Just c = get hash key
+
+main1 = do
+	{
+		a <- put [((-1),(-1)),((-1),(-1)),((-1),(-1)),((-1),(-1)),((-1),(-1))] 7 33;
+		b <- put a 4 67;
+		c <- remove b 7;
+		d <- put c 2 11;
+		e <- put d 3 22;
+		f <- remove e 4;
+		d <- put c 2 33;
+		e <- put d 3 43;
+		f <- remove e 3;
+		g <- put f 8 66;
+		h <- put g 5 37;
+		i <- remove h 2;
+		j <- put i 1 54;
+		k <- put j 45 32;
+		remove k 4;
+	}
 
 
 --Questão 2
@@ -49,7 +125,7 @@ dropAtSpace (a:as)
 	|a  == ' ' = as
 	|otherwise = dropAtSpace as
 
-main = do
+main2 = do
 	{
 	    putStrLn "Type something, please"; 
 	    word <- getLine;

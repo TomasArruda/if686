@@ -33,7 +33,7 @@ g -> i = (e->f) -> (b->[e]) -> b -> [f]
 
 (+).((.).map)
 
-(+) :: (Num a) => a -> (a -> a)
+(+) :: (Num a) => a ->http://open.spotify.com/track/4rTtuM4LOw7AbHdlaRVbQx (a -> a)
 (.).map :: (e->f) -> ((b->[e]) -> b -> [f])
 (.) :: (h->i) -> (g->h) -> g -> i
 
