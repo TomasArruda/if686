@@ -68,15 +68,15 @@ main1 = do
 		d <- put c 2 11;
 		e <- put d 3 22;
 		f <- remove e 4;
-		d <- put c 2 33;
-		e <- put d 3 43;
-		f <- remove e 3;
-		g <- put f 8 66;
-		h <- put g 5 37;
-		i <- remove h 2;
-		j <- put i 1 54;
-		k <- put j 45 32;
-		remove k 4;
+		g <- put f 2 33;
+		h <- put g 3 43;
+		i <- remove h 3;
+		j <- put i 8 66;
+		k <- put j 5 37;
+		l <- remove k 2;
+		m <- put l 1 54;
+		n <- put m 45 32;
+		remove n 1;
 	}
 
 
